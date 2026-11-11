@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
+using Portfolio.Api.Contracts;
 using Portfolio.Api.Domain;
 
 namespace Portfolio.Api.Data;
@@ -22,11 +24,17 @@ public class ContentReader(IOptions<ContentOptions> options)
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
-        Converters = { new JsonStringEnumConverter() },
-        // Campo ausente ou null onde não pode: erro, em vez de valor padrão silencioso.
+        // Enum só por nome: "status": 7 seria aceito como um valor que não existe.
+        Converters = { new JsonStringEnumConverter(allowIntegerValues: false) },
+        // Campo ausente, null onde não pode ou nome digitado errado: erro, em vez de
+        // valor padrão silencioso.
         RespectNullableAnnotations = true,
         RespectRequiredConstructorParameters = true,
+        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
     };
+
+    // O slug vira URL: minúsculas, números e hífen.
+    private static readonly Regex SlugFormat = new("^[a-z0-9]+(-[a-z0-9]+)*$");
 
     // Formato dos arquivos. Separado das entidades para o arquivo não depender do banco.
     private record TechnologyFile(string Name, TechnologyCategory Category, bool Studying);
@@ -37,27 +45,18 @@ public class ContentReader(IOptions<ContentOptions> options)
 
     private record EducationFile(string Institution, string Title, string? Detail, EducationStatus Status);
 
-    public T Read<T>(string fileName)
+    public ProfileResponse LoadProfile()
     {
-        var path = Path.Combine(options.Value.Path, fileName);
-        if (!File.Exists(path))
-            throw new InvalidOperationException($"Arquivo de conteúdo não encontrado: {path}");
-
-        try
-        {
-            return JsonSerializer.Deserialize<T>(File.ReadAllText(path), JsonOptions)
-                ?? throw new JsonException("o arquivo contém apenas null.");
-        }
-        catch (JsonException ex)
-        {
-            throw new InvalidOperationException($"Conteúdo inválido em {fileName}: {ex.Message}", ex);
-        }
+        var profile = Read<ProfileResponse>("profile.json");
+        RequireHttpUrl(profile.Links.Github, "profile.json (links.github)");
+        RequireHttpUrl(profile.Links.Linkedin, "profile.json (links.linkedin)");
+        return profile;
     }
 
     public Catalog LoadCatalog()
     {
         var technologies = new Dictionary<string, Technology>();
-        foreach (var (position, file) in Read<List<TechnologyFile>>("technologies.json").Index())
+        foreach (var (position, file) in ReadList<TechnologyFile>("technologies.json").Index())
         {
             var technology = new Technology
             {
@@ -73,10 +72,22 @@ public class ContentReader(IOptions<ContentOptions> options)
 
         var projects = new List<Project>();
         var slugs = new HashSet<string>();
-        foreach (var (position, file) in Read<List<ProjectFile>>("projects.json").Index())
+        foreach (var (position, file) in ReadList<ProjectFile>("projects.json").Index())
         {
+            if (!SlugFormat.IsMatch(file.Slug))
+                throw new InvalidOperationException(
+                    $"Slug inválido em projects.json: '{file.Slug}'. Use minúsculas, números e hífen.");
+
             if (!slugs.Add(file.Slug))
                 throw new InvalidOperationException($"Slug repetido em projects.json: '{file.Slug}'.");
+
+            // A checagem de null do JSON não alcança os itens de dentro das listas.
+            if (file.Highlights.Any(string.IsNullOrWhiteSpace) || file.Technologies.Any(string.IsNullOrWhiteSpace))
+                throw new InvalidOperationException(
+                    $"O projeto '{file.Slug}' tem item vazio em highlights ou technologies.");
+
+            RequireHttpUrl(file.RepoUrl, $"projects.json ('{file.Slug}', repoUrl)");
+            RequireHttpUrl(file.LiveUrl, $"projects.json ('{file.Slug}', liveUrl)");
 
             var project = new Project
             {
@@ -108,7 +119,7 @@ public class ContentReader(IOptions<ContentOptions> options)
             projects.Add(project);
         }
 
-        var education = Read<List<EducationFile>>("education.json")
+        var education = ReadList<EducationFile>("education.json")
             .Index()
             .Select(item => new EducationItem
             {
@@ -121,5 +132,43 @@ public class ContentReader(IOptions<ContentOptions> options)
             .ToList();
 
         return new Catalog([.. technologies.Values], projects, education);
+    }
+
+    private T Read<T>(string fileName)
+    {
+        var path = Path.Combine(options.Value.Path, fileName);
+        if (!File.Exists(path))
+            throw new InvalidOperationException($"Arquivo de conteúdo não encontrado: {path}");
+
+        try
+        {
+            return JsonSerializer.Deserialize<T>(File.ReadAllText(path), JsonOptions)
+                ?? throw new JsonException("o arquivo contém apenas null.");
+        }
+        catch (JsonException ex)
+        {
+            throw new InvalidOperationException($"Conteúdo inválido em {fileName}: {ex.Message}", ex);
+        }
+    }
+
+    private List<T> ReadList<T>(string fileName)
+    {
+        var items = Read<List<T>>(fileName);
+
+        // Lista vazia faria a sincronização apagar o conteúdo do site sem erro nenhum.
+        if (items.Count == 0 || items.Any(item => item is null))
+            throw new InvalidOperationException($"{fileName} está vazio ou tem um item null.");
+
+        return items;
+    }
+
+    private static void RequireHttpUrl(string? value, string where)
+    {
+        if (value is null)
+            return;
+
+        if (!Uri.TryCreate(value, UriKind.Absolute, out var uri) || uri.Scheme is not ("http" or "https"))
+            throw new InvalidOperationException(
+                $"Link inválido em {where}: '{value}'. Precisa começar com http:// ou https://.");
     }
 }

@@ -11,16 +11,18 @@ builder.Services.AddControllers()
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<PortfolioDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+// Em produção a connection string vem da variável de ambiente ConnectionStrings__Default.
+var connectionString = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("ConnectionStrings:Default não está configurada.");
+
+builder.Services.AddDbContext<PortfolioDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddHealthChecks().AddDbContextCheck<PortfolioDbContext>();
 
 builder.Services.Configure<ContentOptions>(builder.Configuration.GetSection("Content"));
 builder.Services.AddSingleton<ContentReader>();
 builder.Services.AddScoped<ContentSeeder>();
-builder.Services.AddSingleton(services =>
-    services.GetRequiredService<ContentReader>().Read<ProfileResponse>("profile.json"));
+builder.Services.AddSingleton(services => services.GetRequiredService<ContentReader>().LoadProfile());
 
 var app = builder.Build();
 
