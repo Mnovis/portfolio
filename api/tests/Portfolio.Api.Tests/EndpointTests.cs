@@ -28,6 +28,28 @@ public class EndpointTests(ApiFactory factory)
     }
 
     [Fact]
+    public async Task OpenApi_DocumentListsTheRoutes()
+    {
+        var document = await GetJson("/openapi/v1.json");
+
+        var paths = document.GetProperty("paths").EnumerateObject().Select(path => path.Name).ToList();
+        Assert.Contains("/api/profile", paths);
+        Assert.Contains("/api/projects", paths);
+        Assert.Contains("/api/projects/{slug}", paths);
+        Assert.Contains("/api/education", paths);
+        Assert.Contains("/api/technologies", paths);
+    }
+
+    [Fact]
+    public async Task Docs_ServesTheApiReference()
+    {
+        var response = await _client.GetAsync("/docs");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("text/html", response.Content.Headers.ContentType?.MediaType);
+    }
+
+    [Fact]
     public async Task Profile_ReturnsProfileFromContent()
     {
         var profile = await GetJson("/api/profile");

@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Api.Contracts;
 using Portfolio.Api.Data;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,10 @@ using (var scope = app.Services.CreateScope())
 app.UseExceptionHandler();
 app.UseStatusCodePages();
 
+// Documento OpenAPI em /openapi/v1.json e interface navegável em /docs.
 app.MapOpenApi();
+app.MapScalarApiReference("/docs");
+
 app.MapControllers();
 app.MapHealthChecks("/health");
 
