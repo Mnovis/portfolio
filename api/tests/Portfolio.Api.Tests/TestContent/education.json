@@ -1,0 +1,4 @@
+[
+  { "institution": "Universidade de Teste", "title": "Curso A", "detail": "Detalhe do curso A.", "status": "InProgress" },
+  { "institution": "Escola de Teste", "title": "Curso B", "detail": null, "status": "Done" }
+]

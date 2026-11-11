@@ -1,0 +1,5 @@
+[
+  { "name": "C#", "category": "Backend", "studying": true },
+  { "name": "PostgreSQL", "category": "Data", "studying": false },
+  { "name": "AWS", "category": "Infra", "studying": true }
+]

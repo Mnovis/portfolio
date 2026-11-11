@@ -12,14 +12,19 @@ builder.Services.AddDbContext<PortfolioDbContext>(options =>
 
 builder.Services.AddHealthChecks().AddDbContextCheck<PortfolioDbContext>();
 
+builder.Services.Configure<ContentOptions>(builder.Configuration.GetSection("Content"));
+builder.Services.AddSingleton<ContentReader>();
+builder.Services.AddScoped<ContentSeeder>();
+
 var app = builder.Build();
 
-// Simplificação consciente: as migrations são aplicadas na subida. Funciona com uma
-// instância só; com mais de uma, isso vira um passo do deploy.
+// Simplificação consciente: migrations e conteúdo são aplicados na subida. Funciona com
+// uma instância só; com mais de uma, isso vira um passo do deploy.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
     await db.Database.MigrateAsync();
+    await scope.ServiceProvider.GetRequiredService<ContentSeeder>().SyncAsync();
 }
 
 // Erros e 404 saem como application/problem+json.

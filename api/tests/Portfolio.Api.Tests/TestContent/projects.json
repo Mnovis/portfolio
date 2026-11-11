@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "alpha",
+    "name": "Projeto Alpha",
+    "summary": "Resumo do alpha.",
+    "context": "Contexto do alpha.",
+    "highlights": ["Primeiro destaque", "Segundo destaque"],
+    "status": "InProgress",
+    "featured": true,
+    "repoUrl": "https://example.com/alpha",
+    "liveUrl": null,
+    "technologies": ["PostgreSQL", "C#"]
+  },
+  {
+    "slug": "beta",
+    "name": "Projeto Beta",
+    "summary": "Resumo do beta.",
+    "context": null,
+    "highlights": [],
+    "status": "Done",
+    "featured": false,
+    "repoUrl": null,
+    "liveUrl": "https://example.com/beta",
+    "technologies": ["PostgreSQL"]
+  }
+]
