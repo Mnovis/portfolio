@@ -1,0 +1,50 @@
+[
+  {
+    "institution": "Universidade Veiga de Almeida (UVA)",
+    "title": "Engenharia de Software",
+    "detail": "2º semestre. Início em março de 2026, conclusão prevista para 2030.",
+    "status": "InProgress"
+  },
+  {
+    "institution": "COTI Informática",
+    "title": "C#.NET WebDeveloper — Formação Fullstack",
+    "detail": null,
+    "status": "InProgress"
+  },
+  {
+    "institution": "Rocketseat",
+    "title": "Trilha C#/.NET — Avançado",
+    "detail": null,
+    "status": "InProgress"
+  },
+  {
+    "institution": "Rocketseat",
+    "title": "Trilha C#/.NET — Fundamentos",
+    "detail": null,
+    "status": "Done"
+  },
+  {
+    "institution": "Rocketseat",
+    "title": "Formação Full Stack",
+    "detail": "React, Node.js e Next.js.",
+    "status": "Done"
+  },
+  {
+    "institution": "AWS",
+    "title": "Cloud Practitioner",
+    "detail": "Preparação para a certificação.",
+    "status": "InProgress"
+  },
+  {
+    "institution": "Santander Open Academy",
+    "title": "Python",
+    "detail": null,
+    "status": "Done"
+  },
+  {
+    "institution": "TOEFL ITP",
+    "title": "Inglês — nível B1",
+    "detail": null,
+    "status": "Done"
+  }
+]

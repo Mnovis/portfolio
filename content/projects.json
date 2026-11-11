@@ -1,0 +1,131 @@
+[
+  {
+    "slug": "api-usuarios",
+    "name": "Api.Usuarios",
+    "summary": "API REST de usuários em ASP.NET Core (.NET 10), organizada em camadas inspiradas em DDD: Domain, Application, Infrastructure e API.",
+    "context": "Projeto mais recente, em desenvolvimento.",
+    "highlights": [
+      "Entity Framework Core com SQL Server em Docker, mapeamentos via Fluent API e migrations",
+      "Relacionamento 1:N entre Usuário e Perfil, com chave estrangeira e e-mail único",
+      "DTOs separando os dados de entrada e saída das entidades",
+      "Validação de requisições com FluentValidation",
+      "Camada de Services concentrando as regras de negócio"
+    ],
+    "status": "InProgress",
+    "featured": true,
+    "repoUrl": null,
+    "liveUrl": null,
+    "technologies": ["C#", "ASP.NET Core", "Entity Framework Core", "SQL Server", "Docker", "FluentValidation"]
+  },
+  {
+    "slug": "clientes",
+    "name": "Clientes",
+    "summary": "Sistema de cadastro de clientes com back-end em ASP.NET Core e front-end em Angular, em projetos separados.",
+    "context": null,
+    "highlights": [
+      "API com CRUD completo (POST, PUT, DELETE, GET), Dapper com SQL Server em Docker, Swagger, CORS e injeção de dependência",
+      "Front-end em Angular com rotas, formulários reativos com validação de nome, CPF e e-mail, e consumo da API com HttpClient",
+      "Páginas de dashboard, cadastro, consulta e edição"
+    ],
+    "status": "Done",
+    "featured": true,
+    "repoUrl": null,
+    "liveUrl": null,
+    "technologies": ["C#", "ASP.NET Core", "Dapper", "SQL Server", "Docker", "Swagger", "Angular", "TypeScript", "Bootstrap"]
+  },
+  {
+    "slug": "taskflow",
+    "name": "TaskFlow",
+    "summary": "Gerenciador de tarefas colaborativo no estilo Trello, com API REST em Node/Express e atualização em tempo real.",
+    "context": null,
+    "highlights": [
+      "API REST em Node.js e Express com PostgreSQL e Prisma",
+      "Autenticação JWT com refresh tokens",
+      "Tempo real com Socket.io",
+      "Testes automatizados com Vitest e Supertest"
+    ],
+    "status": "Done",
+    "featured": true,
+    "repoUrl": "https://github.com/Mnovis/taskflow",
+    "liveUrl": "https://taskflow-livid-six.vercel.app",
+    "technologies": ["Node.js", "Express", "TypeScript", "PostgreSQL", "Prisma", "JWT", "Socket.io", "Vitest", "Supertest", "React", "Vite", "Tailwind CSS", "Docker"]
+  },
+  {
+    "slug": "corte-certo",
+    "name": "Corte Certo",
+    "summary": "Agendamento para barbearias, com autenticação por papéis e detecção de conflito de horário por profissional.",
+    "context": null,
+    "highlights": [
+      "Autenticação com papéis diferentes de usuário",
+      "Regra de negócio que detecta conflito de horário por profissional"
+    ],
+    "status": "Done",
+    "featured": true,
+    "repoUrl": "https://github.com/Mnovis/corte-certo",
+    "liveUrl": "https://corte-certo-ten.vercel.app",
+    "technologies": ["Node.js", "Express", "Prisma", "JWT", "React", "Vite", "Tailwind CSS"]
+  },
+  {
+    "slug": "api-fornecedores",
+    "name": "ApiFornecedores",
+    "summary": "API REST de fornecedores construída do zero em ASP.NET Core com Dapper.",
+    "context": "Prática por conta própria, fora da aula, para fixar o padrão.",
+    "highlights": [
+      "ASP.NET Core com Dapper e SQL Server em Docker",
+      "Swagger documentado e CORS configurável via appsettings"
+    ],
+    "status": "Done",
+    "featured": false,
+    "repoUrl": "https://github.com/Mnovis/ApiFornecedores",
+    "liveUrl": null,
+    "technologies": ["C#", "ASP.NET Core", "Dapper", "SQL Server", "Docker", "Swagger"]
+  },
+  {
+    "slug": "console-csharp",
+    "name": "Aplicações de console em C#",
+    "summary": "Sistemas CRUD em camadas (Entities, Repositories, Services, Validators) com Dapper e SQL Server, para fixar fundamentos de back-end.",
+    "context": null,
+    "highlights": [
+      "Gestão de produtos com fornecedores e categorias (chaves estrangeiras) e exportação para JSON e XML",
+      "Gestão escolar de cursos, professores e turmas",
+      "Cadastro de pessoas com validação de CPF própria, incluindo o cálculo dos dígitos verificadores",
+      "Exportador de pedidos para JSON e XML usando interface de repositório"
+    ],
+    "status": "Done",
+    "featured": false,
+    "repoUrl": null,
+    "liveUrl": null,
+    "technologies": ["C#", "Dapper", "SQL Server"]
+  },
+  {
+    "slug": "saas-financeiro",
+    "name": "SaaS Financeiro",
+    "summary": "Dashboard de finanças pessoais em Next.js, com autenticação e isolamento de dados por usuário.",
+    "context": null,
+    "highlights": [
+      "Autenticação com NextAuth",
+      "Isolamento multi-tenant por linha",
+      "Receitas, despesas e categorias, com relatórios em PDF"
+    ],
+    "status": "Done",
+    "featured": false,
+    "repoUrl": "https://github.com/Mnovis/Saas-Financeiro",
+    "liveUrl": "https://saas-financeiro-livid.vercel.app",
+    "technologies": ["Next.js", "NextAuth", "Prisma", "TypeScript", "React", "Tailwind CSS"]
+  },
+  {
+    "slug": "studyroom",
+    "name": "StudyRoom",
+    "summary": "Sala de estudos virtual em tempo real.",
+    "context": null,
+    "highlights": [
+      "Comunicação em tempo real com Socket.io",
+      "Next.js com Prisma"
+    ],
+    "status": "Done",
+    "featured": false,
+    "repoUrl": null,
+    "liveUrl": null,
+    "technologies": ["Next.js", "Socket.io", "Prisma"]
+  }
+]

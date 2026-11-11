@@ -1,0 +1,14 @@
+{
+  "name": "Mateus Novis Amolinário de Marins",
+  "shortName": "Mateus Marins",
+  "headline": "Desenvolvedor Full Stack com foco em Back-end",
+  "focus": "C#/.NET",
+  "summary": "Estudante de Engenharia de Software. Gosto de construir APIs, modelar dados e organizar regras de negócio; uso o front-end para entender a aplicação inteira. C#/.NET é a stack em que estou me aprofundando.",
+  "goal": "Estágio ou vaga júnior como desenvolvedor Back-end .NET ou Full Stack com foco em back-end",
+  "location": "Itaboraí / Rio de Janeiro, Brasil",
+  "remote": true,
+  "links": {
+    "github": "https://github.com/Mnovis",
+    "linkedin": "https://www.linkedin.com/in/mateus-novis-534b27320/"
+  }
+}

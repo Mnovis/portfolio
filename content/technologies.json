@@ -1,0 +1,39 @@
+[
+  { "name": "C#", "category": "Backend", "studying": true },
+  { "name": "ASP.NET Core", "category": "Backend", "studying": true },
+  { "name": "FluentValidation", "category": "Backend", "studying": false },
+  { "name": "Swagger", "category": "Backend", "studying": false },
+  { "name": "Node.js", "category": "Backend", "studying": false },
+  { "name": "Express", "category": "Backend", "studying": false },
+  { "name": "Python", "category": "Backend", "studying": false },
+
+  { "name": "Entity Framework Core", "category": "Data", "studying": true },
+  { "name": "Dapper", "category": "Data", "studying": false },
+  { "name": "SQL Server", "category": "Data", "studying": false },
+  { "name": "PostgreSQL", "category": "Data", "studying": false },
+  { "name": "Prisma", "category": "Data", "studying": false },
+
+  { "name": "JWT", "category": "Auth", "studying": false },
+  { "name": "NextAuth", "category": "Auth", "studying": false },
+  { "name": "Socket.io", "category": "Realtime", "studying": false },
+
+  { "name": "Vitest", "category": "Testing", "studying": false },
+  { "name": "Supertest", "category": "Testing", "studying": false },
+
+  { "name": "Docker", "category": "Infra", "studying": false },
+  { "name": "GitHub Actions", "category": "Infra", "studying": false },
+  { "name": "Vercel", "category": "Infra", "studying": false },
+  { "name": "Render", "category": "Infra", "studying": false },
+  { "name": "Railway", "category": "Infra", "studying": false },
+  { "name": "Neon", "category": "Infra", "studying": false },
+  { "name": "Supabase", "category": "Infra", "studying": false },
+  { "name": "AWS", "category": "Infra", "studying": true },
+
+  { "name": "TypeScript", "category": "Frontend", "studying": false },
+  { "name": "React", "category": "Frontend", "studying": false },
+  { "name": "Next.js", "category": "Frontend", "studying": false },
+  { "name": "Angular", "category": "Frontend", "studying": false },
+  { "name": "Tailwind CSS", "category": "Frontend", "studying": false },
+  { "name": "Vite", "category": "Frontend", "studying": false },
+  { "name": "Bootstrap", "category": "Frontend", "studying": false }
+]
