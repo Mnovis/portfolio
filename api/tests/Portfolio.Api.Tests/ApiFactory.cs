@@ -14,10 +14,14 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     public static string TestContentPath => Path.Combine(AppContext.BaseDirectory, "TestContent");
 
+    /// <summary>Origem do site nos testes: a única liberada no CORS.</summary>
+    public const string SiteOrigin = "https://site.test";
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseSetting("ConnectionStrings:Default", _postgres.GetConnectionString());
         builder.UseSetting("Content:Path", TestContentPath);
+        builder.UseSetting("Cors:Origins:0", SiteOrigin);
     }
 
     public Task InitializeAsync() => _postgres.StartAsync();

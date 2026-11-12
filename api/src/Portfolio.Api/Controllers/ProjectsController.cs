@@ -9,6 +9,10 @@ namespace Portfolio.Api.Controllers;
 [Route("api/projects")]
 public class ProjectsController(PortfolioDbContext db) : ControllerBase
 {
+    // As regiões marcam os trechos que o site mostra na "camada de baixo" de cada bloco.
+    // O site lê este arquivo no build, então o código exibido é sempre o que está aqui.
+
+    #region GetAll
     [HttpGet]
     public async Task<List<ProjectSummaryResponse>> GetAll(CancellationToken cancellationToken) =>
         await db.Projects
@@ -22,7 +26,9 @@ public class ProjectsController(PortfolioDbContext db) : ControllerBase
                 p.Featured,
                 p.Technologies.OrderBy(t => t.Position).Select(t => t.Name).ToList()))
             .ToListAsync(cancellationToken);
+    #endregion
 
+    #region GetBySlug
     [HttpGet("{slug}")]
     [ProducesResponseType<ProjectDetailResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -46,4 +52,5 @@ public class ProjectsController(PortfolioDbContext db) : ControllerBase
 
         return project is null ? NotFound() : project;
     }
+    #endregion
 }

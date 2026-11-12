@@ -27,6 +27,31 @@ public class EndpointTests(ApiFactory factory)
         Assert.Equal("Healthy", await response.Content.ReadAsStringAsync());
     }
 
+    private async Task<HttpResponseMessage> GetFromOrigin(string origin)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
+        request.Headers.Add("Origin", origin);
+        return await _client.SendAsync(request);
+    }
+
+    [Fact]
+    public async Task Cors_SiteOrigin_IsAllowed()
+    {
+        var response = await GetFromOrigin(ApiFactory.SiteOrigin);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(ApiFactory.SiteOrigin, response.Headers.GetValues("Access-Control-Allow-Origin").Single());
+    }
+
+    [Fact]
+    public async Task Cors_OtherOrigin_GetsNoPermission()
+    {
+        // A resposta sai, mas sem o cabeçalho: o navegador de outro site não entrega o conteúdo.
+        var response = await GetFromOrigin("https://outro-site.test");
+
+        Assert.False(response.Headers.Contains("Access-Control-Allow-Origin"));
+    }
+
     [Fact]
     public async Task OpenApi_DocumentListsTheRoutes()
     {

@@ -11,6 +11,12 @@ builder.Services.AddControllers()
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
+// CORS: só o site chama a API pelo navegador, e só para ler. As origens vêm da
+// configuração (Cors:Origins); em produção, da variável de ambiente Cors__Origins__0.
+var siteOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? [];
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy => policy.WithOrigins(siteOrigins).WithMethods("GET")));
+
 // Em produção a connection string vem da variável de ambiente ConnectionStrings__Default.
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("ConnectionStrings:Default não está configurada.");
@@ -41,6 +47,8 @@ using (var scope = app.Services.CreateScope())
 // Erros e 404 saem como application/problem+json.
 app.UseExceptionHandler();
 app.UseStatusCodePages();
+
+app.UseCors();
 
 // Documento OpenAPI em /openapi/v1.json e interface navegável em /docs.
 app.MapOpenApi();
