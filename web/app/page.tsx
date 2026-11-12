@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ApiStatus } from "@/components/ApiStatus";
 import { Block } from "@/components/Block";
+import { ContactForm } from "@/components/ContactForm";
 import { underlayers } from "@/lib/underlayer";
 import {
   education,
@@ -191,16 +192,22 @@ export default function Home() {
         </ul>
       </Block>
 
-      <Block id="contato" title="Contato">
-        <p className="display-3 mt-6 max-w-[22em]">{profile.goal}.</p>
-        <ul className="mt-8 flex flex-wrap gap-x-10 gap-y-2 text-[clamp(1.125rem,1.6vw,1.375rem)]">
-          <li>
-            <ExternalLink href={profile.links.linkedin}>LinkedIn</ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href={profile.links.github}>GitHub</ExternalLink>
-          </li>
-        </ul>
+      <Block id="contato" under={underlayers.contact} title="Contato">
+        <div className={`${sectionGap} grid gap-x-16 gap-y-10 lg:grid-cols-[1fr_1.2fr]`}>
+          <div>
+            <p className="display-3 max-w-[16em]">{profile.goal}.</p>
+            <ul className="mt-8 flex flex-wrap gap-x-10 gap-y-2 text-[clamp(1.125rem,1.6vw,1.375rem)]">
+              <li>
+                <ExternalLink href={profile.links.linkedin}>LinkedIn</ExternalLink>
+              </li>
+              <li>
+                <ExternalLink href={profile.links.github}>GitHub</ExternalLink>
+              </li>
+            </ul>
+          </div>
+
+          <ContactForm />
+        </div>
       </Block>
     </>
   );

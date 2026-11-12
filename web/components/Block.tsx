@@ -14,7 +14,12 @@ import { API_URL, useApi, type ApiState } from "@/lib/useApi";
 /** O que fica por baixo de um bloco: o endpoint, a resposta e o código que a gera. */
 export type Underlayer = {
   route: string;
-  /** Resposta montada no build a partir de content/, usada enquanto a API não responde. */
+  /** GET (padrão): o site chama a rota e mostra a resposta. POST: mostra um corpo de exemplo. */
+  method?: "GET" | "POST";
+  /**
+   * GET: resposta montada no build a partir de content/, usada enquanto a API não responde.
+   * POST: exemplo do corpo da requisição.
+   */
   snapshot: unknown;
   code: { file: string; source: string };
 };
@@ -49,7 +54,8 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
   const [open, setOpen] = useState(false);
   // A API só é chamada quando alguém olha por baixo do bloco pela primeira vez.
   const [used, setUsed] = useState(demo);
-  const { state, retry } = useApi(under?.route, used);
+  // Só rotas de leitura são chamadas aqui; o POST do contato quem faz é o formulário.
+  const { state, retry } = useApi(under?.method === "POST" ? undefined : under?.route, used);
 
   const titleId = `${id}-titulo`;
   const underId = `${id}-por-baixo`;
@@ -61,6 +67,13 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
     if (event.pointerType !== "mouse") return;
+
+    // Sobre um formulário a lente atrapalharia quem está preenchendo.
+    if ((event.target as Element).closest("form")) {
+      delete event.currentTarget.dataset.lens;
+      return;
+    }
+
     const box = event.currentTarget.getBoundingClientRect();
     moveLens(event.currentTarget, event.clientX - box.left, event.clientY - box.top);
     setUsed(true);
@@ -72,7 +85,7 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
 
   function handleClick(event: MouseEvent<HTMLElement>) {
     if (!window.matchMedia("(pointer: fine)").matches) return;
-    if ((event.target as Element).closest("a, button")) return;
+    if ((event.target as Element).closest("a, button, form")) return;
     // Quem está selecionando texto para copiar não quer fechar a camada.
     if (window.getSelection()?.toString()) return;
     toggle();
@@ -142,7 +155,7 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
       <div className={`surface ${padding}`} inert={open}>
         {under && (
           <p aria-hidden="true" className="route">
-            <span className="font-medium text-signal">GET</span> {under.route}
+            <span className="font-medium text-signal">{under.method ?? "GET"}</span> {under.route}
           </p>
         )}
         {title && (
@@ -184,8 +197,13 @@ function statusText(state: ApiState) {
 }
 
 function UnderContent({ under, state, retry }: { under: Underlayer; state: ApiState; retry: () => void }) {
+  const post = under.method === "POST";
   const live = state.kind === "live";
   const lines = JSON.stringify(live ? state.body : under.snapshot, null, 2).split("\n");
+
+  let responseLabel = "Resposta · snapshot do build";
+  if (post) responseLabel = "Corpo da requisição · exemplo";
+  else if (live) responseLabel = "Resposta ao vivo";
   const hiddenLines = lines.length - MAX_JSON_LINES;
   // O link para a resposta completa só aparece quando a API está respondendo.
   const responseUrl = live && API_URL ? API_URL + under.route : undefined;
@@ -195,10 +213,10 @@ function UnderContent({ under, state, retry }: { under: Underlayer; state: ApiSt
     <>
       <p className="mb-5 flex flex-wrap gap-x-5 gap-y-1 border-b border-paper/25 pr-40 pb-4">
         <span>
-          <span className="font-medium text-under-signal">GET</span> {under.route}
+          <span className="font-medium text-under-signal">{under.method ?? "GET"}</span> {under.route}
         </span>
         <span role="status" className={live ? "text-under-signal" : "text-under-muted"}>
-          {statusText(state)}
+          {post ? "responde 202 Accepted quando a mensagem é gravada" : statusText(state)}
         </span>
         {state.kind === "down" && (
           <button type="button" className="link" onClick={retry}>
@@ -209,7 +227,7 @@ function UnderContent({ under, state, retry }: { under: Underlayer; state: ApiSt
 
       <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
         <div className="min-w-0">
-          <p className="label mb-2 text-under-muted">{live ? "Resposta ao vivo" : "Resposta · snapshot do build"}</p>
+          <p className="label mb-2 text-under-muted">{responseLabel}</p>
           <pre>{lines.slice(0, MAX_JSON_LINES).join("\n")}</pre>
           {hiddenLines > 0 && (
             <p className="mt-2 text-under-muted">

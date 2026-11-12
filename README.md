@@ -3,8 +3,8 @@
 Portfólio de desenvolvedor com foco em back-end. O site tem duas camadas: a página, e por
 baixo de cada bloco o endpoint, a resposta real da API e o trecho de C# que a gerou.
 
-Em construção. Hoje o repositório tem o conteúdo, a API e o site com a camada de baixo;
-faltam o formulário de contato e a publicação.
+Em construção. Hoje o repositório tem o conteúdo, a API e o site com a camada de baixo e
+o formulário de contato; falta a publicação.
 
 ## Estrutura
 
@@ -27,6 +27,7 @@ mesmo com a API fora.
 | GET | `/api/projects/{slug}` | Um projeto completo, ou 404 |
 | GET | `/api/education` | Formação |
 | GET | `/api/technologies` | Tecnologias e os projetos que usam cada uma |
+| POST | `/api/contact` | Recebe uma mensagem do formulário de contato (202) |
 | GET | `/health` | Estado da API e do banco |
 
 Documentação navegável em `/docs`; documento OpenAPI em `/openapi/v1.json`.
@@ -34,6 +35,23 @@ Documentação navegável em `/docs`; documento OpenAPI em `/openapi/v1.json`.
 Uma tecnologia aparece como "comprovada" (`proven`) quando pelo menos um projeto a usa.
 Isso sai de uma consulta ao relacionamento N:N entre projetos e tecnologias, não de um
 campo preenchido à mão.
+
+### Contato
+
+`POST /api/contact` valida a requisição (400 com um erro por campo), grava a mensagem no
+banco e só depois tenta avisar por e-mail. Se o envio falhar, a mensagem continua gravada,
+com `NotifiedAt` vazio. Há um limite de mensagens por IP a cada 10 minutos (429) e um
+campo-isca contra robôs.
+
+| Configuração | Variável de ambiente | Para quê |
+|---|---|---|
+| `Email:ApiKey` | `Email__ApiKey` | Chave da API do Resend. Sem ela, a mensagem fica só no banco. |
+| `Email:To` | `Email__To` | Endereço que recebe os avisos. |
+| `Email:From` | `Email__From` | Remetente. Opcional. |
+| `Contact:MaxPerWindow` | `Contact__MaxPerWindow` | Mensagens por IP a cada 10 minutos. Padrão: 3. |
+
+Atrás de um proxy, defina `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true` para o limite usar
+o IP de quem visita, e não o do proxy.
 
 ### Stack
 
