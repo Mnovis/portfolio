@@ -1,5 +1,23 @@
 [
   {
+    "slug": "portfolio",
+    "name": "Este portfólio",
+    "summary": "O site que você está vendo e a API por trás dele: ASP.NET Core com Entity Framework Core e PostgreSQL servindo o conteúdo, e um site em Next.js que mostra, em cada bloco, o endpoint e o código que o gerou.",
+    "context": "Publicado: API no Render, banco no Neon e site na Vercel.",
+    "highlights": [
+      "API REST em ASP.NET Core com controllers, DTOs, Entity Framework Core (Fluent API e migrations) e PostgreSQL",
+      "Testes de integração com xUnit e Testcontainers, contra um PostgreSQL real em contêiner",
+      "Formulário de contato com validação, limite de mensagens por IP e aviso por e-mail",
+      "Conteúdo em arquivos JSON, validado e sincronizado com o banco na subida da API",
+      "Imagem Docker da API e CI no GitHub Actions rodando os testes a cada push"
+    ],
+    "status": "Done",
+    "featured": true,
+    "repoUrl": "https://github.com/Mnovis/portfolio",
+    "liveUrl": "https://novis-portfolio.vercel.app",
+    "technologies": ["C#", "ASP.NET Core", "Entity Framework Core", "PostgreSQL", "xUnit", "Docker", "GitHub Actions", "Render", "Neon", "Vercel", "Next.js", "React", "TypeScript", "Tailwind CSS"]
+  },
+  {
     "slug": "api-usuarios",
     "name": "Api.Usuarios",
     "summary": "API REST de usuários em ASP.NET Core (.NET 10), organizada em camadas inspiradas em DDD: Domain, Application, Infrastructure e API.",
@@ -29,7 +47,7 @@
     ],
     "status": "Done",
     "featured": true,
-    "repoUrl": null,
+    "repoUrl": "https://github.com/Mnovis/Api.Clientes",
     "liveUrl": null,
     "technologies": ["C#", "ASP.NET Core", "Dapper", "SQL Server", "Docker", "Swagger", "Angular", "TypeScript", "Bootstrap"]
   },
@@ -93,7 +111,7 @@
     ],
     "status": "Done",
     "featured": false,
-    "repoUrl": null,
+    "repoUrl": "https://github.com/Mnovis/Projeto02App",
     "liveUrl": null,
     "technologies": ["C#", "Dapper", "SQL Server"]
   },

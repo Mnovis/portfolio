@@ -17,6 +17,7 @@
   { "name": "NextAuth", "category": "Auth", "studying": false },
   { "name": "Socket.io", "category": "Realtime", "studying": false },
 
+  { "name": "xUnit", "category": "Testing", "studying": false },
   { "name": "Vitest", "category": "Testing", "studying": false },
   { "name": "Supertest", "category": "Testing", "studying": false },
 
