@@ -3,17 +3,20 @@
 Portfólio de desenvolvedor com foco em back-end. O site tem duas camadas: a página, e por
 baixo de cada bloco o endpoint, a resposta real da API e o trecho de C# que a gerou.
 
-Em construção. Hoje o repositório tem o conteúdo e a API; o site vem a seguir.
+Em construção. Hoje o repositório tem o conteúdo, a API e o site estático; a camada de
+baixo (endpoint, resposta e código por bloco) vem a seguir.
 
 ## Estrutura
 
 ```
 content/   Conteúdo do portfólio em JSON (perfil, projetos, formação, tecnologias)
 api/       API em ASP.NET Core (.NET 10) + testes de integração
+web/       Site em Next.js (geração estática)
 ```
 
 `content/` é a fonte de verdade. Na subida, a API aplica as migrations e sincroniza o
-banco com esses arquivos.
+banco com esses arquivos. O site lê os mesmos arquivos no build, então continua no ar
+mesmo com a API fora.
 
 ## API
 
@@ -61,6 +64,17 @@ dotnet run --project api/src/Portfolio.Api
 ```
 
 A API sobe em `http://localhost:5036`. Abra `http://localhost:5036/docs`.
+
+### Site
+
+Requisito: Node.js 20 ou mais novo.
+
+```bash
+npm install --prefix web
+npm run dev --prefix web
+```
+
+O site sobe em `http://localhost:3000` e não precisa da API para funcionar.
 
 ### Testes
 

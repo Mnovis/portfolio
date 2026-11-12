@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* Direção "Papel": tinta sobre papel, serifa grande, um vermelhão como cor de sinal. */
+:root {
+  --paper: #f2ede3;
+  --ink: #161412;
+  --muted: #675f54;
+  --rule: rgb(22 20 18 / 0.2);
+  --signal: #c2380a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Margem lateral da página: 16px no celular, cresce com a tela. */
+  --spacing-gutter: clamp(1rem, 4vw, 3.5rem);
+}
+
+@layer base {
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-plex-sans), system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+}
+
+@layer components {
+  .display-1,
+  .display-2,
+  .display-3 {
+    font-family: var(--font-instrument-serif), Georgia, serif;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  .display-1 {
+    font-size: clamp(4.5rem, 16vw, 14rem);
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+  }
+
+  .display-2 {
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .display-3 {
+    font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+
+  /* Rótulo pequeno em caixa alta. */
+  .label {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Rota da API acima de cada bloco. */
+  .route {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .link:hover {
+    color: var(--signal);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -5rem;
+    z-index: 50;
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
