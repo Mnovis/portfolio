@@ -119,4 +119,33 @@ Na API, a origem do site precisa estar em `Cors:Origins` (variável `Cors__Origi
 dotnet test api/Portfolio.slnx
 ```
 
+A cada push, o GitHub Actions (`.github/workflows/ci.yml`) roda os testes da API e o lint
+e o build do site.
+
+## Publicação
+
+Três serviços, todos em plano gratuito: banco no Neon, API no Render, site na Vercel.
+
+1. **Neon** — crie um projeto PostgreSQL e copie a connection string no formato .NET:
+   `Host=...;Database=...;Username=...;Password=...;SSL Mode=Require`.
+2. **Render** — *New > Blueprint*, escolha este repositório. O `render.yaml` descreve o
+   serviço (imagem Docker de `api/Dockerfile`); o painel pede os valores:
+   - `ConnectionStrings__Default`: a connection string do Neon.
+   - `Cors__Origins__0`: o endereço do site na Vercel, sem barra no final.
+   - `Email__ApiKey` e `Email__To`: chave do Resend e o e-mail que recebe os avisos.
+3. **Vercel** — importe o repositório com *Root Directory* `web`, mantendo ligada a opção
+   de incluir arquivos de fora desse diretório (o build lê `content/` e `api/`). Variáveis:
+   - `NEXT_PUBLIC_API_URL`: o endereço da API no Render, sem barra no final.
+   - `NEXT_PUBLIC_REPO_URL`: o endereço deste repositório.
+
+No plano gratuito do Render a API dorme depois de 15 minutos sem tráfego e leva cerca de
+um minuto para acordar. O site continua no ar nesse intervalo: mostra o snapshot do build
+e troca pela resposta ao vivo quando a API responde.
+
+Para testar a imagem da API localmente:
+
+```bash
+docker build -f api/Dockerfile -t portfolio-api .
+```
+
 Os testes sobem um PostgreSQL próprio em contêiner; não usam o banco do `docker compose`.

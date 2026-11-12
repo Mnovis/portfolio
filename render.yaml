@@ -1,0 +1,26 @@
+# Descreve o serviço da API no Render (Blueprint). Os valores marcados com sync: false são
+# segredos: o Render pede cada um no painel na criação do serviço, e eles nunca ficam aqui.
+services:
+  - type: web
+    name: portfolio-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      # Connection string do PostgreSQL (Neon), no formato do Npgsql.
+      - key: ConnectionStrings__Default
+        sync: false
+      # Endereço do site, sem barra no final. Só essa origem pode chamar a API pelo navegador.
+      - key: Cors__Origins__0
+        sync: false
+      # Aviso por e-mail das mensagens de contato (Resend).
+      - key: Email__ApiKey
+        sync: false
+      - key: Email__To
+        sync: false
+      # O Render fica na frente da API como proxy; isto faz o limite de mensagens por IP
+      # usar o IP de quem visita.
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
