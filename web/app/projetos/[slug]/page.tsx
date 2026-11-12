@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Block } from "@/components/Block";
 import { projects, projectStatusLabel } from "@/lib/content";
+import { projectUnderlayer } from "@/lib/underlayer";
 
 // Só existem as páginas dos projetos de content/projects.json; o resto é 404.
 export const dynamicParams = false;
@@ -25,7 +26,7 @@ export default async function ProjectPage({ params }: PageProps<"/projetos/[slug
   const rowClass = "border-t border-rule py-3";
 
   return (
-    <Block id="projeto" route={`/api/projects/${project.slug}`}>
+    <Block id="projeto" under={projectUnderlayer(project)}>
       <p className="mt-8">
         <Link href="/#projetos" className="link inline-block py-1 font-mono text-[0.8125rem]">
           <span aria-hidden="true">←</span> Projetos

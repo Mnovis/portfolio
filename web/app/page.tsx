@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ApiStatus } from "@/components/ApiStatus";
 import { Block } from "@/components/Block";
+import { underlayers } from "@/lib/underlayer";
 import {
   education,
   educationStatusLabel,
@@ -40,7 +42,7 @@ export default function Home() {
 
   return (
     <>
-      <Block id="abertura" route="/api/profile">
+      <Block id="abertura" under={underlayers.profile} demo>
         <h1 className="display-1 mt-[clamp(2rem,7vw,5rem)] mb-[clamp(1.5rem,5vw,3.5rem)]">
           {firstName} <em>{otherNames.join(" ")}</em>
         </h1>
@@ -63,11 +65,14 @@ export default function Home() {
               <span aria-hidden="true"> · </span>
               <ExternalLink href={profile.links.linkedin}>LinkedIn</ExternalLink>
             </Fact>
+            <Fact term="API">
+              <ApiStatus route={underlayers.profile.route} />
+            </Fact>
           </dl>
         </div>
       </Block>
 
-      <Block id="projetos" route="/api/projects" title="Projetos">
+      <Block id="projetos" under={underlayers.projects} title="Projetos">
         <ol className={sectionGap}>
           {featured.map((project, index) => (
             <li key={project.slug} className={`${twoColumns} gap-y-4 border-t border-rule py-8`}>
@@ -118,7 +123,7 @@ export default function Home() {
         </ul>
       </Block>
 
-      <Block id="stack" route="/api/technologies" title="Stack">
+      <Block id="stack" under={underlayers.technologies} title="Stack">
         <div className={`${sectionGap} grid gap-x-16 gap-y-10 lg:grid-cols-[1.6fr_1fr]`}>
           <div>
             <h3 className="label mb-2 text-muted">Comprovada em projeto</h3>
@@ -160,7 +165,7 @@ export default function Home() {
         </div>
       </Block>
 
-      <Block id="formacao" route="/api/education" title="Formação">
+      <Block id="formacao" under={underlayers.education} title="Formação">
         <ul className={sectionGap}>
           {education.map((item) => (
             <li

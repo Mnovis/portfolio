@@ -3,8 +3,8 @@
 Portfólio de desenvolvedor com foco em back-end. O site tem duas camadas: a página, e por
 baixo de cada bloco o endpoint, a resposta real da API e o trecho de C# que a gerou.
 
-Em construção. Hoje o repositório tem o conteúdo, a API e o site estático; a camada de
-baixo (endpoint, resposta e código por bloco) vem a seguir.
+Em construção. Hoje o repositório tem o conteúdo, a API e o site com a camada de baixo;
+faltam o formulário de contato e a publicação.
 
 ## Estrutura
 
@@ -75,6 +75,25 @@ npm run dev --prefix web
 ```
 
 O site sobe em `http://localhost:3000` e não precisa da API para funcionar.
+
+#### Camada de baixo
+
+Cada bloco do site tem, por baixo, o endpoint que serve aquele dado. Com mouse, uma lente
+segue o cursor e o clique fixa a camada; com toque ou teclado, o botão "Ver por baixo"
+alterna a camada inteira.
+
+- **Resposta:** o navegador chama a API de verdade e mostra status e tempo medidos ali.
+  Enquanto a API não responde, aparece um snapshot montado no build a partir de
+  `content/`, identificado como snapshot.
+- **Código:** o trecho de C# é lido de `api/` no build (`web/lib/underlayer.ts`), pelo
+  arquivo inteiro ou por `#region`. Nada é copiado à mão.
+
+| Variável | Para quê |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Endereço da API. Em desenvolvimento o padrão é `http://localhost:5036`. |
+| `NEXT_PUBLIC_REPO_URL` | Endereço do repositório no GitHub, para o link do arquivo de código. Opcional. |
+
+Na API, a origem do site precisa estar em `Cors:Origins` (variável `Cors__Origins__0`).
 
 ### Testes
 
