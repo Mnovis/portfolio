@@ -8,6 +8,7 @@ public class PortfolioDbContext(DbContextOptions<PortfolioDbContext> options) : 
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Technology> Technologies => Set<Technology>();
     public DbSet<EducationItem> EducationItems => Set<EducationItem>();
+    public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PortfolioDbContext).Assembly);
