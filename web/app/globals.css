@@ -146,8 +146,10 @@
     overflow-wrap: anywhere;
   }
 
-  /* A lente só existe para quem usa mouse e não pediu menos movimento. */
-  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* A lente só existe para quem usa mouse. Ela anda com o cursor, então vale também para
+     quem pediu menos movimento: nesse caso só a transição do raio (mais abaixo) e a
+     demonstração automática da abertura ficam desligadas. */
+  @media (pointer: fine) {
     .xray:has(> .under) {
       cursor: crosshair;
     }
