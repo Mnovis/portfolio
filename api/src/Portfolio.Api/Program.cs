@@ -41,8 +41,7 @@ builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email
 builder.Services.AddHttpClient<ContactNotifier>(client => client.Timeout = TimeSpan.FromSeconds(10));
 
 // Em produção a connection string vem da variável de ambiente ConnectionStrings__Default.
-var connectionString = builder.Configuration.GetConnectionString("Default")
-    ?? throw new InvalidOperationException("ConnectionStrings:Default não está configurada.");
+var connectionString = DatabaseConnection.Read(builder.Configuration.GetConnectionString("Default"));
 
 builder.Services.AddDbContext<PortfolioDbContext>(options => options.UseNpgsql(connectionString));
 
