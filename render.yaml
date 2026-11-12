@@ -5,6 +5,9 @@ services:
     name: portfolio-api
     runtime: docker
     plan: free
+    # Leste dos EUA: mais perto do Brasil que o padrão (oregon). O banco no Neon fica na
+    # mesma região (AWS us-east-1). Não dá para trocar depois de criar o serviço.
+    region: virginia
     dockerfilePath: ./api/Dockerfile
     dockerContext: .
     healthCheckPath: /health
