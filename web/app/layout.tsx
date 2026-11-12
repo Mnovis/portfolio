@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Serif } from "next/font/google";
 import Link from "next/link";
+import { LensToggle } from "@/components/LensToggle";
 import { profile } from "@/lib/content";
 import "./globals.css";
 
@@ -51,17 +52,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Link href="/" className="py-2 hover:underline">
             {profile.shortName}
           </Link>
-          <nav aria-label="Seções">
-            <ul className="flex flex-wrap gap-x-6">
-              {sections.map((section) => (
-                <li key={section.href}>
-                  <Link href={section.href} className="block py-2 hover:underline">
-                    {section.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="flex flex-wrap items-center gap-x-6">
+            <nav aria-label="Seções">
+              <ul className="flex flex-wrap gap-x-6">
+                {sections.map((section) => (
+                  <li key={section.href}>
+                    <Link href={section.href} className="block py-2 hover:underline">
+                      {section.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <LensToggle />
+          </div>
         </header>
 
         <main id="conteudo">{children}</main>

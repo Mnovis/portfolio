@@ -9,6 +9,7 @@ import {
   type PointerEvent,
   type ReactNode,
 } from "react";
+import { useLens } from "@/lib/lens";
 import { API_URL, useApi, type ApiState } from "@/lib/useApi";
 
 /** O que fica por baixo de um bloco: o endpoint, a resposta e o código que a gera. */
@@ -46,8 +47,8 @@ function moveLens(element: HTMLElement, x: number, y: number) {
 
 /**
  * Uma seção da página. Tem duas camadas na mesma área: a superfície (o conteúdo) e, por
- * baixo, o endpoint que serve aquele dado. Com mouse, uma lente segue o cursor e o clique
- * fixa a camada; com toque ou teclado, o botão alterna a camada inteira.
+ * baixo, o endpoint que serve aquele dado. O botão do bloco alterna a camada inteira. Com
+ * a lente ligada no cabeçalho, ela segue o cursor do mouse e o clique fixa a camada.
  */
 export function Block({ id, title, under, demo = false, children }: BlockProps) {
   const section = useRef<HTMLElement>(null);
@@ -57,8 +58,15 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
   // Só rotas de leitura são chamadas aqui; o POST do contato quem faz é o formulário.
   const { state, retry } = useApi(under?.method === "POST" ? undefined : under?.route, used);
 
+  const lensOn = useLens();
+
   const titleId = `${id}-titulo`;
   const underId = `${id}-por-baixo`;
+
+  // Desligou a lente com o cursor em cima de um bloco: ela some na hora.
+  useEffect(() => {
+    if (!lensOn) delete section.current?.dataset.lens;
+  }, [lensOn]);
 
   function toggle() {
     setUsed(true);
@@ -66,10 +74,10 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
   }
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
-    if (event.pointerType !== "mouse") return;
+    if (!lensOn || event.pointerType !== "mouse") return;
 
-    // Sobre um formulário a lente atrapalharia quem está preenchendo.
-    if ((event.target as Element).closest("form")) {
+    // Sobre link, botão ou formulário a lente some: a pessoa precisa ver onde clica.
+    if ((event.target as Element).closest("a, button, form")) {
       delete event.currentTarget.dataset.lens;
       return;
     }
@@ -84,7 +92,8 @@ export function Block({ id, title, under, demo = false, children }: BlockProps) 
   }
 
   function handleClick(event: MouseEvent<HTMLElement>) {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
+    // Clicar no bloco só fixa a camada com a lente ligada; sem ela, o clique é só um clique.
+    if (!lensOn || !window.matchMedia("(pointer: fine)").matches) return;
     if ((event.target as Element).closest("a, button, form")) return;
     // Quem está selecionando texto para copiar não quer fechar a camada.
     if (window.getSelection()?.toString()) return;

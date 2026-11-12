@@ -150,7 +150,8 @@
      quem pediu menos movimento: nesse caso só a transição do raio (mais abaixo) e a
      demonstração automática da abertura ficam desligadas. */
   @media (pointer: fine) {
-    .xray:has(> .under) {
+    /* Cursor em cruz só enquanto a lente está ligada (botão do cabeçalho). */
+    html[data-lente] .xray:has(> .under) {
       cursor: crosshair;
     }
 
@@ -205,6 +206,42 @@
   .xray[data-open] > .peek:hover {
     background: var(--paper);
     color: var(--ink);
+  }
+
+  /* Botão do cabeçalho que liga a lente. Escondido para quem não usa mouse. */
+  .lens-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  @media (pointer: fine) {
+    .lens-toggle {
+      display: inline-flex;
+    }
+  }
+
+  .lens-toggle:hover,
+  .lens-toggle[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .lens-toggle-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .lens-toggle[aria-pressed="true"] .lens-toggle-dot {
+    background: var(--signal);
+    border-color: var(--signal);
   }
 
   /* Botão principal de formulário: tinta cheia. */
