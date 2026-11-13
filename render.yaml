@@ -23,6 +23,14 @@ services:
         sync: false
       - key: Email__To
         sync: false
+      # Painel de administrador (/admin no site): login e o segredo que assina os tokens
+      # (texto aleatório de 32 caracteres ou mais).
+      - key: Admin__Email
+        sync: false
+      - key: Admin__Password
+        sync: false
+      - key: Admin__JwtKey
+        sync: false
       # O Render fica na frente da API como proxy; isto faz o limite de mensagens por IP
       # usar o IP de quem visita.
       - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED

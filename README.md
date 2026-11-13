@@ -28,6 +28,11 @@ mesmo com a API fora.
 | GET | `/api/education` | Formação |
 | GET | `/api/technologies` | Tecnologias e os projetos que usam cada uma |
 | POST | `/api/contact` | Recebe uma mensagem do formulário de contato (202) |
+| POST | `/api/admin/login` | Token JWT do painel (401 com e-mail ou senha errados) |
+| GET | `/api/admin/overview` | Contagens de mensagens e de conteúdo. Exige token |
+| GET | `/api/admin/messages` | Mensagens do formulário, mais recentes primeiro. Exige token |
+| PATCH | `/api/admin/messages/{id}` | Marca a mensagem como lida ou não lida (204). Exige token |
+| DELETE | `/api/admin/messages/{id}` | Exclui a mensagem (204). Exige token |
 | GET | `/health` | Estado da API e do banco |
 
 Documentação navegável em `/docs`; documento OpenAPI em `/openapi/v1.json`.
@@ -53,9 +58,28 @@ campo-isca contra robôs.
 Atrás de um proxy, defina `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true` para o limite usar
 o IP de quem visita, e não o do proxy.
 
+### Painel
+
+A página `/admin` do site mostra as mensagens do formulário e uma visão geral com
+contagens. `POST /api/admin/login` confere e-mail e senha e devolve um JWT válido por
+2 horas; as outras rotas `api/admin/*` só respondem com esse token no cabeçalho
+`Authorization: Bearer ...` (401 sem ele). Há um limite de tentativas de login por IP a
+cada 10 minutos (429).
+
+| Configuração | Variável de ambiente | Para quê |
+|---|---|---|
+| `Admin:Email` | `Admin__Email` | E-mail do administrador. |
+| `Admin:Password` | `Admin__Password` | Senha do administrador. |
+| `Admin:JwtKey` | `Admin__JwtKey` | Segredo que assina os tokens. No mínimo 32 caracteres. |
+| `Admin:MaxLoginsPerWindow` | `Admin__MaxLoginsPerWindow` | Tentativas de login por IP a cada 10 minutos. Padrão: 5. |
+
+Sem as três primeiras, o login responde 503 e o resto da API funciona normalmente. Os
+valores nunca ficam no repositório: em desenvolvimento, defina as variáveis no terminal
+antes de `dotnet run`.
+
 ### Stack
 
-ASP.NET Core com controllers, Entity Framework Core (Fluent API e migrations), PostgreSQL,
+ASP.NET Core com controllers, autenticação JWT, Entity Framework Core (Fluent API e migrations), PostgreSQL,
 xUnit com `WebApplicationFactory` e Testcontainers.
 
 ### Decisões
@@ -69,6 +93,12 @@ xUnit com `WebApplicationFactory` e Testcontainers.
 - **Conteúdo validado antes de tocar o banco.** Arquivo ausente, JSON inválido, slug
   repetido ou tecnologia inexistente derrubam a subida com uma mensagem que diz onde está
   o erro.
+- **Um administrador, com e-mail e senha na configuração.** Tabela de usuários com hash
+  de senha só faz sentido a partir do segundo usuário. A comparação é em tempo constante
+  e a resposta é a mesma para e-mail errado e para senha errada.
+- **Token do painel no `sessionStorage`, não em cookie.** Site e API ficam em domínios
+  diferentes, e o navegador bloqueia cookie de terceiros. Em troca, o token vale pouco
+  tempo e some ao fechar a aba.
 - **Testes contra PostgreSQL de verdade**, em contêiner. Provider em memória não se
   comporta como o banco real (colunas `text[]`, índices únicos, transações).
 
@@ -133,6 +163,8 @@ Três serviços, todos em plano gratuito: banco no Neon, API no Render, site na 
    - `ConnectionStrings__Default`: a connection string do Neon.
    - `Cors__Origins__0`: o endereço do site na Vercel, sem barra no final.
    - `Email__ApiKey` e `Email__To`: chave do Resend e o e-mail que recebe os avisos.
+   - `Admin__Email`, `Admin__Password` e `Admin__JwtKey`: login do painel e o segredo que
+     assina os tokens (texto aleatório de 32 caracteres ou mais).
 3. **Vercel** — importe o repositório com *Root Directory* `web`, mantendo ligada a opção
    de incluir arquivos de fora desse diretório (o build lê `content/` e `api/`). Variáveis:
    - `NEXT_PUBLIC_API_URL`: o endereço da API no Render, sem barra no final.

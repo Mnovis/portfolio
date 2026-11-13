@@ -8,6 +8,7 @@
       "API REST em ASP.NET Core com controllers, DTOs, Entity Framework Core (Fluent API e migrations) e PostgreSQL",
       "Testes de integração com xUnit e Testcontainers, contra um PostgreSQL real em contêiner",
       "Formulário de contato com validação, limite de mensagens por IP e aviso por e-mail",
+      "Painel de administrador com login JWT para ler, marcar e excluir as mensagens recebidas",
       "Conteúdo em arquivos JSON, validado e sincronizado com o banco na subida da API",
       "Imagem Docker da API e CI no GitHub Actions rodando os testes a cada push"
     ],
@@ -15,7 +16,7 @@
     "featured": true,
     "repoUrl": "https://github.com/Mnovis/portfolio",
     "liveUrl": "https://novis-portfolio.vercel.app",
-    "technologies": ["C#", "ASP.NET Core", "Entity Framework Core", "PostgreSQL", "xUnit", "Docker", "GitHub Actions", "Render", "Neon", "Vercel", "Next.js", "React", "TypeScript", "Tailwind CSS"]
+    "technologies": ["C#", "ASP.NET Core", "Entity Framework Core", "PostgreSQL", "JWT", "xUnit", "Docker", "GitHub Actions", "Render", "Neon", "Vercel", "Next.js", "React", "TypeScript", "Tailwind CSS"]
   },
   {
     "slug": "api-usuarios",
