@@ -1,0 +1,1 @@
+Mateus Marins — Desenvolvedor Full Stack com foco em Back-end. Uma lente circular revela a resposta JSON de GET /api/profile.

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Serif } from "next/font/google";
 import Link from "next/link";
 import { LensToggle } from "@/components/LensToggle";
-import { profile } from "@/lib/content";
+import { profile, siteUrl } from "@/lib/content";
 import "./globals.css";
 
 // next/font baixa as fontes no build e serve do próprio site: sem requisição externa.
@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     template: `%s — ${profile.shortName}`,
   },
   description: profile.summary,
+  // Base para os endereços absolutos que a prévia de link exige (imagem, og:url).
+  metadataBase: new URL(siteUrl),
+  openGraph: { type: "website", locale: "pt_BR", siteName: profile.shortName },
 };
 
 const sections = [

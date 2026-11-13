@@ -39,6 +39,10 @@ export const profile = profileJson;
 export const projects = projectsJson as Project[];
 export const education = educationJson as EducationItem[];
 
+// Endereço público do site: o mesmo link que aparece no projeto "portfolio".
+// Trocou de domínio? Basta mudar em content/projects.json.
+export const siteUrl = projects.find((project) => project.slug === "portfolio")?.liveUrl ?? "http://localhost:3000";
+
 const technologies: Technology[] = technologiesJson.map((technology) => ({
   ...technology,
   projects: projects.filter((project) => project.technologies.includes(technology.name)),

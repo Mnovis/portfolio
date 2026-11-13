@@ -86,7 +86,9 @@ export function ContactForm() {
     );
 
   return (
-    <form onSubmit={handleSubmit} className="relative grid max-w-[36em] gap-5">
+    // method="post": se alguém enviar antes de o JavaScript carregar, o navegador não
+    // coloca nome, e-mail e mensagem no endereço da página (o padrão de formulário é GET).
+    <form method="post" onSubmit={handleSubmit} className="relative grid max-w-[36em] gap-5">
       <div>
         <label htmlFor="contato-name" className="label">
           Nome
