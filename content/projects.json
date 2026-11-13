@@ -32,7 +32,7 @@
     ],
     "status": "InProgress",
     "featured": true,
-    "repoUrl": null,
+    "repoUrl": "https://github.com/Mnovis/Api.Usuarios",
     "liveUrl": null,
     "technologies": ["C#", "ASP.NET Core", "Entity Framework Core", "SQL Server", "Docker", "FluentValidation"]
   },

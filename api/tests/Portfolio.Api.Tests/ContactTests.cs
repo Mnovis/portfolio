@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Api.Data;
 using Portfolio.Api.Domain;
+using Portfolio.Api.Services;
 
 namespace Portfolio.Api.Tests;
 
@@ -110,6 +111,30 @@ public class ContactTests
         // A mensagem está no banco, marcada como ainda não avisada.
         var stored = Assert.Single(await StoredFrom(email));
         Assert.Null(stored.NotifiedAt);
+    }
+
+    [Fact]
+    public async Task Notifier_ProviderRefuses_ThrowsWithTheReason()
+    {
+        // O motivo da recusa precisa chegar ao log; só o código HTTP não diz o que consertar.
+        _factory.Email.Response = HttpStatusCode.Forbidden;
+        _factory.Email.ResponseBody = """{"message":"motivo de teste"}""";
+
+        using var scope = _factory.Services.CreateScope();
+        var notifier = scope.ServiceProvider.GetRequiredService<ContactNotifier>();
+        var message = new ContactMessage
+        {
+            Name = "Ana",
+            Email = NewEmail(),
+            Message = "Mensagem de teste.",
+            CreatedAt = DateTimeOffset.UtcNow,
+        };
+
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(
+            () => notifier.NotifyAsync(message, CancellationToken.None));
+
+        Assert.Contains("403", exception.Message);
+        Assert.Contains("motivo de teste", exception.Message);
     }
 
     [Fact]

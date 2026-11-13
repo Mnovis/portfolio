@@ -48,7 +48,15 @@ public class ContactNotifier(HttpClient http, IOptions<EmailOptions> options, IL
         });
 
         using var response = await http.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+        {
+            // O corpo da resposta diz o motivo da recusa (remetente não verificado,
+            // destinatário não permitido, chave inválida). Sem ele o log só teria o código HTTP.
+            var reason = await response.Content.ReadAsStringAsync(cancellationToken);
+            throw new HttpRequestException(
+                $"O provedor de e-mail respondeu {(int)response.StatusCode}: {reason}");
+        }
+
         return true;
     }
 }

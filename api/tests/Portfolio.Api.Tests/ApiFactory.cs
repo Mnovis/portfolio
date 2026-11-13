@@ -57,12 +57,16 @@ public class FakeEmailProvider
     public record SentEmail(string? Url, string? Authorization, string Body);
 
     public List<SentEmail> Sent { get; } = [];
+    private const string SuccessBody = """{"id":"teste"}""";
+
     public HttpStatusCode Response { get; set; } = HttpStatusCode.OK;
+    public string ResponseBody { get; set; } = SuccessBody;
 
     public void Reset()
     {
         Sent.Clear();
         Response = HttpStatusCode.OK;
+        ResponseBody = SuccessBody;
     }
 
     public HttpMessageHandler CreateHandler() => new Handler(this);
@@ -76,7 +80,7 @@ public class FakeEmailProvider
             provider.Sent.Add(new SentEmail(
                 request.RequestUri?.ToString(), request.Headers.Authorization?.ToString(), body));
 
-            return new HttpResponseMessage(provider.Response) { Content = new StringContent("""{"id":"teste"}""") };
+            return new HttpResponseMessage(provider.Response) { Content = new StringContent(provider.ResponseBody) };
         }
     }
 }
