@@ -15,7 +15,10 @@ import {
   studyingTechnologies,
 } from "@/lib/content";
 
-const sectionGap = "mt-[clamp(1.5rem,4vw,3rem)]";
+// PDF em web/public. É a versão pública do currículo: sem telefone.
+const resumeUrl = "/curriculo-mateus-marins.pdf";
+
+const sectionGap ="mt-[clamp(1.5rem,4vw,3rem)]";
 const twoColumns = "grid gap-x-16 lg:grid-cols-[1fr_2.2fr]";
 
 function Fact({ term, children }: { term: string; children: ReactNode }) {
@@ -65,6 +68,8 @@ export default function Home() {
               <ExternalLink href={profile.links.github}>GitHub</ExternalLink>
               <span aria-hidden="true"> · </span>
               <ExternalLink href={profile.links.linkedin}>LinkedIn</ExternalLink>
+              <span aria-hidden="true"> · </span>
+              <ExternalLink href={resumeUrl}>Currículo (PDF)</ExternalLink>
             </Fact>
             <Fact term="API">
               <ApiStatus route={underlayers.profile.route} />
@@ -202,6 +207,9 @@ export default function Home() {
               </li>
               <li>
                 <ExternalLink href={profile.links.github}>GitHub</ExternalLink>
+              </li>
+              <li>
+                <ExternalLink href={resumeUrl}>Currículo (PDF)</ExternalLink>
               </li>
             </ul>
           </div>
