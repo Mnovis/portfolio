@@ -24,6 +24,10 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     public const string EmailApiKey = "chave-de-teste";
     public const string EmailTo = "dono@site.test";
 
+    // Credenciais do painel só para os testes; as de verdade vêm de variáveis de ambiente.
+    public const string AdminEmail = "admin@site.test";
+    public const string AdminPassword = "senha-so-para-os-testes";
+
     /// <summary>Fica no lugar do provedor de e-mail. Nenhum teste envia e-mail de verdade.</summary>
     public FakeEmailProvider Email { get; } = new();
 
@@ -37,6 +41,11 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
         // Os testes compartilham o mesmo "IP"; o limite real é exercitado em um teste próprio.
         builder.UseSetting("Contact:MaxPerWindow", "1000");
+
+        builder.UseSetting("Admin:Email", AdminEmail);
+        builder.UseSetting("Admin:Password", AdminPassword);
+        builder.UseSetting("Admin:JwtKey", "chave-de-assinatura-so-para-os-testes-0123456789");
+        builder.UseSetting("Admin:MaxLoginsPerWindow", "1000");
 
         builder.ConfigureTestServices(services =>
             services.AddHttpClient<ContactNotifier>().ConfigurePrimaryHttpMessageHandler(Email.CreateHandler));

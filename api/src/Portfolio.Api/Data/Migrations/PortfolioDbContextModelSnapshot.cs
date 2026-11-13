@@ -52,6 +52,9 @@ namespace Portfolio.Api.Data.Migrations
                     b.Property<DateTimeOffset?>("NotifiedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTimeOffset?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("ContactMessages");

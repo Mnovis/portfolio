@@ -11,4 +11,7 @@ public class ContactMessage
 
     /// <summary>Quando o aviso por e-mail saiu. Null = gravada, mas o aviso ainda não foi enviado.</summary>
     public DateTimeOffset? NotifiedAt { get; set; }
+
+    /// <summary>Quando foi marcada como lida no painel. Null = não lida.</summary>
+    public DateTimeOffset? ReadAt { get; set; }
 }
