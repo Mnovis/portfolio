@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ApiStatus } from "@/components/ApiStatus";
 import { Block } from "@/components/Block";
 import { ContactForm } from "@/components/ContactForm";
+import { ProjectVisual } from "@/components/ProjectVisual";
 import { underlayers } from "@/lib/underlayer";
 import {
   education,
@@ -82,6 +83,9 @@ export default function Home() {
                 <p className="mt-4 max-w-[38em] text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-normal">
                   {project.summary}
                 </p>
+                <div className="mt-6 max-w-[46rem]">
+                  <ProjectVisual slug={project.slug} compact />
+                </div>
                 <p className="mt-5">
                   <Link
                     href={`/projetos/${project.slug}`}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Block } from "@/components/Block";
+import { ProjectVisual } from "@/components/ProjectVisual";
 import { projects, projectStatusLabel } from "@/lib/content";
 import { projectUnderlayer } from "@/lib/underlayer";
 
@@ -38,6 +39,10 @@ export default async function ProjectPage({ params }: PageProps<"/projetos/[slug
       <div className="mt-[clamp(1.5rem,4vw,3rem)] grid gap-x-16 gap-y-10 lg:grid-cols-[1fr_2.2fr]">
         <div className="lg:col-start-2">
           <p className="max-w-[38em] text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-normal">{project.summary}</p>
+
+          <div className="mt-8 max-w-[52rem]">
+            <ProjectVisual slug={project.slug} />
+          </div>
 
           <h2 className="label mt-10 mb-2 text-muted">Destaques</h2>
           <ul className="max-w-[44em]">

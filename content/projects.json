@@ -27,7 +27,8 @@
       "Relacionamento 1:N entre Usuário e Perfil, com chave estrangeira e e-mail único",
       "DTOs separando os dados de entrada e saída das entidades",
       "Validação de requisições com FluentValidation",
-      "Camada de Services concentrando as regras de negócio"
+      "Camada de Services concentrando as regras de negócio",
+      "Criação de usuário com senha criptografada, perfil padrão vinculado e resposta 409 para e-mail já cadastrado"
     ],
     "status": "InProgress",
     "featured": true,

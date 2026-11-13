@@ -20,7 +20,7 @@
   {
     "institution": "Rocketseat",
     "title": "Trilha C#/.NET — Fundamentos",
-    "detail": null,
+    "detail": "Certificados: Introdução ao C# e .NET, Fundamentos de C# e Fundamentos do .NET.",
     "status": "Done"
   },
   {
@@ -28,6 +28,18 @@
     "title": "Formação Full Stack",
     "detail": "React, Node.js e Next.js.",
     "status": "Done"
+  },
+  {
+    "institution": "Rocketseat",
+    "title": "Node.js com IA Generativa na prática",
+    "detail": null,
+    "status": "Done"
+  },
+  {
+    "institution": "Santander Bootcamp 2026",
+    "title": "Java e fundamentos de IA",
+    "detail": "Módulos concluídos: sintaxe, classes, herança e polimorfismo em Java; fundamentos de IA e engenharia de prompts.",
+    "status": "InProgress"
   },
   {
     "institution": "AWS",

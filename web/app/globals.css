@@ -208,6 +208,54 @@
     color: var(--ink);
   }
 
+  /* Diagrama do modelo de dados: uma tabela HTML para cada tabela do banco. */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    align-items: start;
+    gap: 1rem;
+  }
+
+  .model-table {
+    width: 100%;
+    border: 1px solid var(--ink);
+    border-collapse: collapse;
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .model-table caption {
+    caption-side: top;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--ink);
+    border-bottom: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .model-table th,
+  .model-table td {
+    padding: 0.3rem 0.6rem;
+    border-top: 1px solid var(--rule);
+    font-weight: 400;
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .model-table td {
+    color: var(--muted);
+  }
+
+  .model-table .model-key {
+    width: 1%;
+    color: var(--signal);
+    font-weight: 500;
+    text-align: right;
+  }
+
   /* Botão do cabeçalho que liga a lente. Escondido para quem não usa mouse. */
   .lens-toggle {
     display: none;
