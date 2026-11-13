@@ -15,7 +15,7 @@ import {
   studyingTechnologies,
 } from "@/lib/content";
 
-// PDF em web/public. É a versão pública do currículo: sem telefone.
+// PDF em web/public. Arquivo fixo: mudou o conteúdo do site, gere o PDF de novo.
 const resumeUrl = "/curriculo-mateus-marins.pdf";
 
 const sectionGap ="mt-[clamp(1.5rem,4vw,3rem)]";
