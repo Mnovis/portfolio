@@ -11,7 +11,7 @@ type Status =
   | { kind: "sent" }
   | { kind: "error"; message: string };
 
-const inputClass =
+export const inputClass =
   "mt-1.5 block w-full border border-ink bg-transparent px-3 py-2.5 aria-[invalid=true]:border-signal";
 
 /**
